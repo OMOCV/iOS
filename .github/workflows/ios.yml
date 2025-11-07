@@ -1,0 +1,58 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: macos-latest
+    
+    permissions:
+      contents: read
+      actions: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Show Xcode version
+      run: xcodebuild -version
+
+    - name: Build iOS App
+      run: |
+        xcodebuild clean build \
+          -project ABBRobotReader.xcodeproj \
+          -scheme ABBRobotReader \
+          -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO
+
+    - name: Archive for Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        xcodebuild archive \
+          -project ABBRobotReader.xcodeproj \
+          -scheme ABBRobotReader \
+          -configuration Release \
+          -archivePath build/ABBRobotReader.xcarchive \
+          -destination 'generic/platform=iOS' \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
+    - name: Upload Archive artifact
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ABBRobotReader-Archive
+        path: build/ABBRobotReader.xcarchive
+        retention-days: 30
