@@ -103,10 +103,6 @@ struct SyntaxHighlighter {
                 else if instructions.contains(word) {
                     attributedString[wordRange].foregroundColor = .orange
                 }
-                // Check for string literals
-                else if line.contains("\"\(word)\"") {
-                    attributedString[wordRange].foregroundColor = .red
-                }
                 
                 searchStartIndex = wordRange.upperBound
             }

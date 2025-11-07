@@ -50,7 +50,7 @@ cat > build/ExportOptions.plist << EOF
     <key>stripSwiftSymbols</key>
     <true/>
     <key>thinning</key>
-    <string>&lt;none&gt;</string>
+    <string><none></string>
 </dict>
 </plist>
 EOF

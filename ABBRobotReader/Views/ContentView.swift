@@ -4,6 +4,7 @@ struct ContentView: View {
     @State private var files: [ABBFile] = []
     @State private var selectedFile: ABBFile?
     @State private var showDocumentPicker = false
+    @State private var newlySelectedFiles: [ABBFile] = []
     
     var body: some View {
         NavigationView {
@@ -63,7 +64,11 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showDocumentPicker) {
-                DocumentPicker(selectedFiles: $files)
+                DocumentPicker(selectedFiles: $newlySelectedFiles)
+            }
+            .onChange(of: newlySelectedFiles) { newFiles in
+                files.append(contentsOf: newFiles)
+                newlySelectedFiles = []
             }
             .sheet(item: $selectedFile) { file in
                 CodeEditorView(file: file)
