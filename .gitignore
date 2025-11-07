@@ -13,6 +13,10 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+## Build directories
+build/
+DerivedData/
+
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
