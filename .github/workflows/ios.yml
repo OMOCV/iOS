@@ -27,12 +27,16 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
+    - name: List available simulators
+      run: xcrun simctl list devices available
+
     - name: Build iOS App
       run: |
         xcodebuild clean build \
           -project ABBRobotReader.xcodeproj \
           -scheme ABBRobotReader \
-          -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' \
+          -sdk iphonesimulator \
+          -destination 'generic/platform=iOS Simulator' \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO
 
