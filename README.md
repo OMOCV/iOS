@@ -55,6 +55,8 @@
 
 ### 构建 IPA 文件
 
+#### 方法 1：使用自动化脚本
+
 使用提供的脚本自动构建 IPA：
 
 ```bash
@@ -63,7 +65,12 @@
 
 构建完成后，IPA 文件将位于 `build/ipa/` 目录中。
 
-### 手动构建步骤
+#### 方法 2：通过 GitHub Actions（CI/CD）
+
+当代码 Push 到 `main` 分支时，GitHub Actions 会自动构建 IPA 文件。
+构建完成后，可以在 GitHub Actions 的 Artifacts 中下载 `ABBRobotReader-IPA`。
+
+#### 方法 3：手动构建步骤
 
 ```bash
 # 1. 清理构建

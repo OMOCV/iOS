@@ -49,10 +49,19 @@ jobs:
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
 
-    - name: Upload Archive artifact
+    - name: Export IPA
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        xcodebuild -exportArchive \
+          -archivePath build/ABBRobotReader.xcarchive \
+          -exportPath build/ipa \
+          -exportOptionsPlist ExportOptions.plist \
+          -allowProvisioningUpdates
+
+    - name: Upload IPA artifact
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v3
       with:
-        name: ABBRobotReader-Archive
-        path: build/ABBRobotReader.xcarchive
+        name: ABBRobotReader-IPA
+        path: build/ipa/*.ipa
         retention-days: 30

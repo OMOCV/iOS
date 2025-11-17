@@ -201,7 +201,12 @@ git push origin v1.0.0
 - Push 到 main 或 develop 分支
 - 创建 Pull Request
 
-构建产物会上传为 Artifacts，可以在 GitHub Actions 页面下载。
+当 Push 到 main 分支时，CI/CD 会自动：
+1. 创建 Release 归档 (Archive)
+2. 导出 IPA 文件
+3. 将 IPA 文件上传为 Artifacts
+
+构建产物可以在 GitHub Actions 页面的 Artifacts 部分下载。IPA 文件名为 `ABBRobotReader-IPA`。
 
 ### 本地 CI 测试
 
