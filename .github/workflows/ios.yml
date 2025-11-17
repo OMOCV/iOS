@@ -30,13 +30,19 @@ jobs:
     - name: List available simulators
       run: xcrun simctl list devices available
 
+    # Optional: Dynamic simulator selection example for future use
+    # - name: Select available simulator
+    #   run: |
+    #     UDID=$(xcrun simctl list devices available | grep -m 1 "iPhone" | sed -n 's/.* (\([^)]*\)).*/\1/p')
+    #     echo "SIMULATOR_UDID=$UDID" >> $GITHUB_ENV
+
     - name: Build iOS App
       run: |
         xcodebuild clean build \
           -project ABBRobotReader.xcodeproj \
           -scheme ABBRobotReader \
           -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+          -destination 'generic/platform=iOS Simulator' \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO
 
