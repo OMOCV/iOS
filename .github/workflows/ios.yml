@@ -27,16 +27,34 @@ jobs:
     - name: Show Xcode version
       run: xcodebuild -version
 
+    - name: Show build settings
+      run: xcodebuild -showBuildSettings -project ABBRobotReader.xcodeproj -scheme ABBRobotReader | grep -E 'SUPPORTED_PLATFORMS|IPHONEOS_DEPLOYMENT_TARGET|PLATFORM_NAME'
+
     - name: List available simulators
       run: xcrun simctl list devices available
 
+    - name: Select first available iPhone simulator
+      id: pick-sim
+      run: |
+        DEVICE=$(xcrun simctl list devices available | grep -E 'iPhone [0-9]+' | head -1 | sed -E 's/.*(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}).*/\1/')
+        echo "Picked UDID: $DEVICE" || true
+        echo "DEVICE_UDID=$DEVICE" >> $GITHUB_ENV
+
     - name: Build iOS App
       run: |
+        set -e
+        if [ -n "${DEVICE_UDID}" ]; then
+          echo "Using picked simulator UDID: ${DEVICE_UDID}"
+          DEST="-destination id=${DEVICE_UDID}"
+        else
+          echo "No simulator UDID found. Falling back to generic destination."
+          DEST="-destination 'generic/platform=iOS Simulator'"
+        fi
         xcodebuild clean build \
           -project ABBRobotReader.xcodeproj \
           -scheme ABBRobotReader \
           -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+          ${DEST} \
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO
 
