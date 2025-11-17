@@ -68,7 +68,9 @@
 #### 方法 2：通过 GitHub Actions（CI/CD）
 
 当代码 Push 到 `main` 分支时，GitHub Actions 会自动构建 IPA 文件。
-构建完成后，可以在 GitHub Actions 的 Artifacts 中下载 `ABBRobotReader-IPA`。
+构建完成后，可以在 GitHub Actions 的 Artifacts 中下载：
+- `ABBRobotReader-IPA-{commit-sha}`: 生成的 IPA 文件（保留 30 天）
+- `ABBRobotReader-Archive-{commit-sha}`: Xcode 归档文件（保留 7 天）
 
 #### 方法 3：手动构建步骤
 

@@ -196,17 +196,29 @@ git push origin v1.0.0
 
 ### GitHub Actions
 
-项目包含 GitHub Actions 配置文件 (`.github/workflows/ios.yml`)，会在以下情况自动构建：
+项目包含 GitHub Actions 配置文件 (`.github/workflows/ios.yml`)，包含两个独立的工作流作业：
 
-- Push 到 main 或 develop 分支
-- 创建 Pull Request
+**1. Build and Test (构建和测试)**
+- 在所有分支上运行（main, develop）
+- 在所有 Pull Request 中运行
+- 为 iOS 模拟器构建应用
+- 验证代码可以正常编译
 
-当 Push 到 main 分支时，CI/CD 会自动：
-1. 创建 Release 归档 (Archive)
-2. 导出 IPA 文件
-3. 将 IPA 文件上传为 Artifacts
+**2. Build IPA for Release (构建发布 IPA)**
+- 仅在 Push 到 main 分支时运行
+- 依赖于 Build and Test 作业成功完成
+- 包含以下步骤：
+  1. 为 iOS 设备创建 Release 归档 (Archive)
+  2. 验证归档文件创建成功
+  3. 导出 IPA 文件
+  4. 验证 IPA 文件导出成功
+  5. 上传 IPA 和归档文件为 Artifacts
 
-构建产物可以在 GitHub Actions 页面的 Artifacts 部分下载。IPA 文件名为 `ABBRobotReader-IPA`。
+构建产物可以在 GitHub Actions 页面的 Artifacts 部分下载：
+- `ABBRobotReader-IPA-{commit-sha}`: IPA 文件（保留 30 天）
+- `ABBRobotReader-Archive-{commit-sha}`: Xcode 归档文件（保留 7 天）
+
+工作流包含完整的验证步骤，确保 IPA 构建成功。如果任何步骤失败，工作流将立即停止并报告错误。
 
 ### 本地 CI 测试
 
