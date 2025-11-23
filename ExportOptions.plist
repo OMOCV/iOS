@@ -8,6 +8,8 @@
     <false/>
     <key>signingStyle</key>
     <string>automatic</string>
+    <key>teamID</key>
+    <string>__TEAM_ID__</string>
     <key>stripSwiftSymbols</key>
     <true/>
     <key>thinning</key>
