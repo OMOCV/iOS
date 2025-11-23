@@ -60,10 +60,12 @@
 使用提供的脚本自动构建 IPA：
 
 ```bash
-./build_ipa.sh
+DEVELOPMENT_TEAM=你的TeamID ./build_ipa.sh
 ```
 
 构建完成后，IPA 文件将位于 `build/ipa/` 目录中。
+
+> 提示：`DEVELOPMENT_TEAM` 为 Apple 开发者账号的 Team ID，用于自动签名。CI 环境下可在仓库 Secrets 中配置同名变量供工作流使用。
 
 #### 方法 2：通过 GitHub Actions（CI/CD）
 

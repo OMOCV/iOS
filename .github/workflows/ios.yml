@@ -47,6 +47,9 @@ jobs:
     runs-on: macos-latest
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    env:
+      DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
     
     permissions:
       contents: read
@@ -61,6 +64,14 @@ jobs:
       with:
         xcode-version: '16.0'
 
+    - name: Validate signing configuration
+      run: |
+        if [ -z "$DEVELOPMENT_TEAM" ]; then
+          echo "❌ DEVELOPMENT_TEAM secret is not configured."
+          echo "Please add your Apple Team ID to the repository secret named DEVELOPMENT_TEAM."
+          exit 1
+        fi
+
     - name: Show Xcode version
       run: xcodebuild -version
 
@@ -73,9 +84,8 @@ jobs:
           -configuration Release \
           -archivePath build/ABBRobotReader.xcarchive \
           -destination 'generic/platform=iOS' \
-          CODE_SIGN_IDENTITY="" \
-          CODE_SIGNING_REQUIRED=NO \
-          CODE_SIGNING_ALLOWED=NO
+          -allowProvisioningUpdates \
+          DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM
 
     - name: Verify Archive
       run: |
@@ -93,7 +103,8 @@ jobs:
           -archivePath build/ABBRobotReader.xcarchive \
           -exportPath build/ipa \
           -exportOptionsPlist ExportOptions.plist \
-          -allowProvisioningUpdates
+          -allowProvisioningUpdates \
+          DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM
 
     - name: Verify IPA
       run: |

@@ -12,6 +12,13 @@ ARCHIVE_PATH="build/${PROJECT_NAME}.xcarchive"
 EXPORT_PATH="build/ipa"
 IPA_NAME="${PROJECT_NAME}.ipa"
 
+if [ -z "${DEVELOPMENT_TEAM}" ]; then
+    echo "❌ DEVELOPMENT_TEAM environment variable is not set."
+    echo "Please provide your Apple Team ID, e.g.:"
+    echo "  DEVELOPMENT_TEAM=YOUR_TEAM_ID ./build_ipa.sh"
+    exit 1
+fi
+
 echo "🏗️  Building ABB Robot Reader iOS App..."
 echo "=================================="
 
@@ -30,9 +37,8 @@ xcodebuild archive \
     -configuration ${CONFIGURATION} \
     -archivePath ${ARCHIVE_PATH} \
     -destination 'generic/platform=iOS' \
-    CODE_SIGN_IDENTITY="" \
-    CODE_SIGNING_REQUIRED=NO \
-    CODE_SIGNING_ALLOWED=NO
+    -allowProvisioningUpdates \
+    DEVELOPMENT_TEAM=${DEVELOPMENT_TEAM}
 
 # Create export options plist
 echo "📝 Creating export options..."
@@ -47,6 +53,8 @@ cat > build/ExportOptions.plist << EOF
     <false/>
     <key>signingStyle</key>
     <string>automatic</string>
+    <key>teamID</key>
+    <string>${DEVELOPMENT_TEAM}</string>
     <key>stripSwiftSymbols</key>
     <true/>
     <key>thinning</key>
@@ -60,7 +68,9 @@ echo "📤 Exporting IPA..."
 xcodebuild -exportArchive \
     -archivePath ${ARCHIVE_PATH} \
     -exportPath ${EXPORT_PATH} \
-    -exportOptionsPlist build/ExportOptions.plist
+    -exportOptionsPlist build/ExportOptions.plist \
+    -allowProvisioningUpdates \
+    DEVELOPMENT_TEAM=${DEVELOPMENT_TEAM}
 
 echo ""
 echo "✅ Build completed successfully!"
