@@ -74,6 +74,12 @@ DEVELOPMENT_TEAM=你的TeamID ./build_ipa.sh
 - `ABBRobotReader-IPA-{commit-sha}`: 生成的 IPA 文件（保留 30 天）
 - `ABBRobotReader-Archive-{commit-sha}`: Xcode 归档文件（保留 7 天）
 
+CI 环境需要配置以下 Secrets（推荐使用 Base64 编码后的证书/描述文件内容）：
+- `IOS_P12` / `IOS_P12_PASSWORD`：用于签名的 `.p12` 证书及其密码
+- `IOS_MOBILEPROVISION`：移动设备描述文件（`.mobileprovision`）
+- `KEYCHAIN_PASSWORD`：工作流临时钥匙串的访问密码
+- `DEVELOPMENT_TEAM`：Apple 开发者账号的 Team ID
+
 #### 方法 3：手动构建步骤
 
 ```bash
