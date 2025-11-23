@@ -112,7 +112,7 @@ jobs:
 </dict>
 </plist>
 EOF
-        security cms -D -i build/ExportOptions.plist >/dev/null || true
+        plutil -lint build/ExportOptions.plist
         cat build/ExportOptions.plist
 
     - name: Create Archive
@@ -154,14 +154,17 @@ EOF
 
     - name: Verify IPA
       run: |
-        if [ ! -f build/ipa/*.ipa ]; then
+        shopt -s nullglob
+        IPAS=(build/ipa/*.ipa)
+        if [ ${#IPAS[@]} -eq 0 ]; then
           echo "❌ IPA export failed!"
           exit 1
         fi
+
         echo "✅ IPA exported successfully"
         ls -lh build/ipa/
         # Display IPA details
-        for ipa in build/ipa/*.ipa; do
+        for ipa in "${IPAS[@]}"; do
           echo "📦 IPA file: $ipa"
           echo "📏 Size: $(du -h "$ipa" | cut -f1)"
         done
