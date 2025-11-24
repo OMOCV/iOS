@@ -93,6 +93,12 @@ xcodebuild clean \
 3. 导出 IPA 文件
 4. 将 IPA 保存到 `build/ipa/` 目录
 
+使用前请确认：
+
+- 必须在 **macOS** 上执行，并安装好 Xcode 及其命令行工具（`xcodebuild`）。
+- 请在项目根目录运行脚本，否则会提示找不到 `ABBRobotReader.xcodeproj`。
+- 如需带签名的 IPA，请根据团队证书调整脚本中的导出选项或在 Xcode 中手动分发。
+
 ### 手动创建 Archive
 
 1. 在 Xcode 中选择设备为 "Any iOS Device (arm64)"
