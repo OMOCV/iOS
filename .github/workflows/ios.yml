@@ -3,14 +3,17 @@ name: iOS CI
 on:
   push:
     branches: [ main, develop ]
+
   pull_request:
     branches: [ main, develop ]
+
   workflow_dispatch:
     inputs:
-      trigger-ipa:
-        description: "Set to true to build and export the IPA via workflow dispatch"
+      build-ipa:
+        type: boolean
+        description: "是否构建 IPA？"
         required: false
-        default: "true"
+        default: true
 
 jobs:
   # Job 1: Build and test for CI validation
@@ -48,13 +51,14 @@ jobs:
           CODE_SIGNING_REQUIRED=NO
 
   # Job 2: Build IPA for release (only on main branch)
-  build-ipa:
+    build-ipa:
     name: Build IPA for Release
     runs-on: macos-latest
     needs: build
-    if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.trigger-ipa == 'true')
+
+    if: >
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+      || github.event_name == 'workflow_dispatch' && github.event.inputs.build-ipa == 'true'
 
     env:
       APP_BUNDLE_ID: com.omocv.ABBRobotReader
