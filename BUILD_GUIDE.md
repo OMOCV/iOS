@@ -101,7 +101,7 @@ xcodebuild clean \
 
 ### 在 GitHub Actions 中构建 IPA
 
-仓库提供了 CI 工作流（`.github/workflows/build-ipa.yml`）用于在 macOS Runner 上构建 IPA。
+仓库提供了 CI 工作流（`.github/workflows/build-ipa.yml`）用于在 macOS Runner 上构建 IPA（当前使用 `macos-15-intel`）。
 
 触发方式：
 

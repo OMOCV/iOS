@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-ipa:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
       - name: Checkout
         uses: actions/checkout@v4
