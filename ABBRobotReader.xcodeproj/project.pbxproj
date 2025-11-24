@@ -17,6 +17,7 @@
                 A1000008000000000000001 /* ABBModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008000000000000001 /* ABBModule.swift */; };
                 A1000009000000000000001 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000009000000000000001 /* DocumentPicker.swift */; };
                 A1000010000000000000001 /* GlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011000000000000001 /* GlassStyle.swift */; };
+                A1000011000000000000002 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5000007000000000000001 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
                 A2000009000000000000001 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
                 A2000010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
                 A2000011000000000000001 /* GlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassStyle.swift; sourceTree = "<group>"; };
+                A2000012000000000000001 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+                A2000013000000000000001 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,19 +56,20 @@
 			);
 			sourceTree = "<group>";
 		};
-		A5000002000000000000001 /* ABBRobotReader */ = {
-			isa = PBXGroup;
-			children = (
-				A2000010000000000000001 /* Info.plist */,
-				A2000001000000000000001 /* ABBRobotReaderApp.swift */,
-				A5000004000000000000001 /* Views */,
-				A5000005000000000000001 /* Models */,
-				A5000006000000000000001 /* Parsers */,
-				A2000003000000000000001 /* Assets.xcassets */,
-			);
-			path = ABBRobotReader;
-			sourceTree = "<group>";
-		};
+                A5000002000000000000001 /* ABBRobotReader */ = {
+                        isa = PBXGroup;
+                        children = (
+                                A2000010000000000000001 /* Info.plist */,
+                                A2000001000000000000001 /* ABBRobotReaderApp.swift */,
+                                A5000004000000000000001 /* Views */,
+                                A5000005000000000000001 /* Models */,
+                                A5000006000000000000001 /* Parsers */,
+                                A2000003000000000000001 /* Assets.xcassets */,
+                                A5000007000000000000001 /* Localizable.strings */,
+                        );
+                        path = ABBRobotReader;
+                        sourceTree = "<group>";
+                };
 		A5000003000000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,8 +130,8 @@
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A0000001000000000000001 /* Project object */ = {
-			isa = PBXProject;
+                A0000001000000000000001 /* Project object */ = {
+                        isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
@@ -139,13 +143,14 @@
 				};
 			};
 			buildConfigurationList = A7000002000000000000001 /* Build configuration list for PBXProject "ABBRobotReader" */;
-			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
+                        compatibilityVersion = "Xcode 14.0";
+                        developmentRegion = "zh-Hans";
+                        hasScannedForEncodings = 0;
+                        knownRegions = (
+                                en,
+                                Base,
+                                "zh-Hans",
+                        );
 			mainGroup = A5000001000000000000001;
 			productRefGroup = A5000003000000000000001 /* Products */;
 			projectDirPath = "";
@@ -157,15 +162,28 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A9000001000000000000001 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A1000003000000000000001 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+                A9000001000000000000001 /* Resources */ = {
+                        isa = PBXResourcesBuildPhase;
+                        buildActionMask = 2147483647;
+                        files = (
+                                A1000003000000000000001 /* Assets.xcassets in Resources */,
+                                A1000011000000000000002 /* Localizable.strings in Resources */,
+                        );
+                        runOnlyForDeploymentPostprocessing = 0;
+                };
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+                A5000007000000000000001 /* Localizable.strings */ = {
+                        isa = PBXVariantGroup;
+                        children = (
+                                A2000012000000000000001 /* en */,
+                                A2000013000000000000001 /* zh-Hans */,
+                        );
+                        name = Localizable.strings;
+                        sourceTree = "<group>";
+                };
+/* End PBXVariantGroup section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A8000001000000000000001 /* Sources */ = {

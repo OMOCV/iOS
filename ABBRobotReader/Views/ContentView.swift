@@ -23,6 +23,7 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 18)
                     .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .toolbar {
@@ -79,18 +80,21 @@ struct ContentView: View {
                 .foregroundStyle(Color.white.opacity(0.85))
         }
         .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var metricRow: some View {
         let moduleCount = files.reduce(0) { $0 + $1.modules.count }
         let routineCount = files.reduce(0) { $0 + $1.modules.reduce(0) { $0 + $1.routines.count } }
 
-        return HStack(spacing: 12) {
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
+
+        return LazyVGrid(columns: columns, spacing: 12) {
             metricChip(title: "metrics.files", value: files.count, icon: "folder.fill")
             metricChip(title: "metrics.modules", value: moduleCount, icon: "shippingbox.fill")
             metricChip(title: "metrics.routines", value: routineCount, icon: "function")
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity)
     }
 
     private func metricChip(title: String, value: Int, icon: String) -> some View {
@@ -113,6 +117,7 @@ struct ContentView: View {
         .padding(.vertical, 10)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var workspace: some View {
@@ -136,6 +141,7 @@ struct ContentView: View {
                                 if let file = selectedFile ?? files.first {
                                     CodeEditorView(file: file, useAmbientBackground: false)
                                         .glassCard()
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                 } else {
                                     emptyDetail
                                 }
@@ -152,8 +158,9 @@ struct ContentView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(minHeight: 420)
+        .frame(minHeight: 520)
     }
 
     private var emptyState: some View {
