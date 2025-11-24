@@ -97,7 +97,7 @@ xcodebuild clean \
 
 - 必须在 **macOS** 上执行，并安装好 Xcode 及其命令行工具（`xcodebuild`）。
 - 请在项目根目录运行脚本，否则会提示找不到 `ABBRobotReader.xcodeproj`。
-- 生成的 IPA 直接从归档打包而不重新签名，适合用于本地验证或后续手动签名。如需带签名的 IPA，请在 Xcode Organizer 中分发或在 CI 中提供签名证书和描述文件。
+- 生成的 IPA 直接从归档打包而不重新签名，并在构建时强制禁用签名（手动签名、空 `DEVELOPMENT_TEAM` 和空 `PROVISIONING_PROFILE_SPECIFIER`），适合用于本地验证或后续手动签名。如需带签名的 IPA，请在 Xcode Organizer 中分发或在 CI 中提供签名证书和描述文件。
 
 ### 在 GitHub Actions 中构建 IPA
 

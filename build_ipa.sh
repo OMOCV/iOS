@@ -46,17 +46,20 @@ rm -rf build
 mkdir -p "${EXPORT_PATH}"
 
 # Build for iOS device (generic)
-echo "📦 Building archive..."
+echo "📦 Building archive (code signing disabled)..."
 xcodebuild archive \
     -project ${PROJECT_NAME}.xcodeproj \
     -scheme ${SCHEME_NAME} \
     -configuration ${CONFIGURATION} \
     -archivePath ${ARCHIVE_PATH} \
-    -destination 'generic/platform=iOS' \
+    -destination 'generic/platform=iOS,name=Any iOS Device (arm64)' \
     -sdk iphoneos \
     CODE_SIGN_IDENTITY="" \
     CODE_SIGNING_REQUIRED=NO \
-    CODE_SIGNING_ALLOWED=NO
+    CODE_SIGNING_ALLOWED=NO \
+    CODE_SIGN_STYLE=Manual \
+    DEVELOPMENT_TEAM="" \
+    PROVISIONING_PROFILE_SPECIFIER=""
 
 APP_PATH="${ARCHIVE_PATH}/Products/Applications/${PROJECT_NAME}.app"
 PAYLOAD_PATH="${EXPORT_PATH}/Payload"
