@@ -101,9 +101,9 @@ jobs:
         echo "📌 UUID: $PROFILE_UUID"
         echo "📌 TeamID: $TEAM_ID"
 
-    # -------------------------
-    # 生成 ExportOptions.plist
-    # -------------------------
+# -------------------------
+# 生成 ExportOptions.plist
+# -------------------------
 - name: Generate ExportOptions.plist
   run: |
     cat > ExportOptions.plist <<'EOF'
