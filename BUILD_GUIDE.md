@@ -90,8 +90,26 @@ xcodebuild clean \
 这个脚本会：
 1. 清理之前的构建
 2. 创建归档 (Archive)
-3. 导出 IPA 文件
+3. 从归档生成未重新签名的 IPA
 4. 将 IPA 保存到 `build/ipa/` 目录
+
+使用前请确认：
+
+- 必须在 **macOS** 上执行，并安装好 Xcode 及其命令行工具（`xcodebuild`）。
+- 请在项目根目录运行脚本，否则会提示找不到 `ABBRobotReader.xcodeproj`。
+- 生成的 IPA 直接从归档打包而不重新签名，并在构建时强制禁用签名（手动签名、空 `DEVELOPMENT_TEAM` 和空 `PROVISIONING_PROFILE_SPECIFIER`），适合用于本地验证或后续手动签名。如需带签名的 IPA，请在 Xcode Organizer 中分发或在 CI 中提供签名证书和描述文件。
+
+### 在 GitHub Actions 中构建 IPA
+
+仓库提供了 CI 工作流（`.github/workflows/build-ipa.yml`）用于在 macOS Runner 上构建 IPA（当前使用 `macos-15-intel`）。工作流使用已经共享的 `ABBRobotReader` Scheme，确保 CI 能够找到并构建目标。
+
+触发方式：
+
+- 向 `main` 分支推送
+- 打开 Pull Request
+- 手动执行 `Run workflow`（workflow_dispatch）
+
+CI 构建完成后，IPA 会作为名为 `ABBRobotReader-IPA` 的工件 (artifact) 发布，可从 Actions 页面下载。
 
 ### 手动创建 Archive
 
