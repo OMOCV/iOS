@@ -25,9 +25,10 @@ class ABBFileParser {
         for line in lines {
             lineNumber += 1
             let trimmedLine = line.trimmingCharacters(in: .whitespaces)
+            let uppercasedLine = trimmedLine.uppercased()
             
             // Module detection
-            if trimmedLine.hasPrefix("MODULE") || trimmedLine.hasPrefix("SYSMODULE") || trimmedLine.hasPrefix("USERMODULE") {
+            if uppercasedLine.hasPrefix("MODULE") || uppercasedLine.hasPrefix("SYSMODULE") || uppercasedLine.hasPrefix("USERMODULE") {
                 // Save previous module if exists
                 if var module = currentModule {
                     module.routines = routines
@@ -38,14 +39,14 @@ class ABBFileParser {
                 
                 // Parse module name
                 let moduleType: ABBModule.ModuleType
-                if trimmedLine.hasPrefix("SYSMODULE") {
+                if uppercasedLine.hasPrefix("SYSMODULE") {
                     moduleType = .system
-                } else if trimmedLine.hasPrefix("USERMODULE") {
+                } else if uppercasedLine.hasPrefix("USERMODULE") {
                     moduleType = .user
                 } else {
                     moduleType = .program
                 }
-                
+
                 let moduleName = extractName(from: trimmedLine, after: moduleType.rawValue)
                 currentModule = ABBModule(name: moduleName, type: moduleType, routines: [], declarations: [], content: "")
                 moduleContent = line + "\n"
@@ -53,7 +54,14 @@ class ABBFileParser {
                 declarations = []
             }
             // Routine detection
-            else if trimmedLine.hasPrefix("PROC ") || trimmedLine.hasPrefix("FUNC ") || trimmedLine.hasPrefix("TRAP ") {
+            else if [
+                uppercasedLine.hasPrefix("PROC "),
+                uppercasedLine.hasPrefix("FUNC "),
+                uppercasedLine.hasPrefix("TRAP "),
+                uppercasedLine.hasPrefix("LOCAL PROC "),
+                uppercasedLine.hasPrefix("LOCAL FUNC "),
+                uppercasedLine.hasPrefix("LOCAL TRAP ")
+            ].contains(true) {
                 // Save previous routine if exists
                 if var routine = currentRoutine {
                     routine.content = routineContent
@@ -62,10 +70,10 @@ class ABBFileParser {
                 
                 let routineType: ABBRoutine.RoutineType
                 let keyword: String
-                if trimmedLine.hasPrefix("PROC ") {
+                if uppercasedLine.hasPrefix("LOCAL PROC ") || uppercasedLine.hasPrefix("PROC ") {
                     routineType = .proc
                     keyword = "PROC"
-                } else if trimmedLine.hasPrefix("FUNC ") {
+                } else if uppercasedLine.hasPrefix("LOCAL FUNC ") || uppercasedLine.hasPrefix("FUNC ") {
                     routineType = .function
                     keyword = "FUNC"
                 } else {
