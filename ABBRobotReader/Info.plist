@@ -84,28 +84,55 @@
 				</array>
 			</dict>
 		</dict>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.plain-text</string>
-				<string>public.text</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>ABB Configuration File</string>
-			<key>UTTypeIdentifier</key>
-			<string>com.abb.rapid.config</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>cfg</string>
-					<string>CFG</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
+                <dict>
+                        <key>UTTypeConformsTo</key>
+                        <array>
+                                <string>public.plain-text</string>
+                                <string>public.text</string>
+                        </array>
+                        <key>UTTypeDescription</key>
+                        <string>ABB Configuration File</string>
+                        <key>UTTypeIdentifier</key>
+                        <string>com.abb.rapid.config</string>
+                        <key>UTTypeTagSpecification</key>
+                        <dict>
+                                <key>public.filename-extension</key>
+                                <array>
+                                        <string>cfg</string>
+                                        <string>CFG</string>
+                                </array>
+                        </dict>
+                </dict>
+                <dict>
+                        <key>UTTypeConformsTo</key>
+                        <array>
+                                <string>public.plain-text</string>
+                                <string>public.text</string>
+                        </array>
+                        <key>UTTypeDescription</key>
+                        <string>ABB RAPID Source Bundle</string>
+                        <key>UTTypeIdentifier</key>
+                        <string>com.abb.rapid.source</string>
+                        <key>UTTypeTagSpecification</key>
+                        <dict>
+                                <key>public.filename-extension</key>
+                                <array>
+                                        <string>sio</string>
+                                        <string>SIO</string>
+                                        <string>ls</string>
+                                        <string>LS</string>
+                                        <string>backup</string>
+                                        <string>rapid</string>
+                                        <string>script</string>
+                                        <string>cfgx</string>
+                                        <string>log</string>
+                                        <string>txt</string>
+                                </array>
+                        </dict>
+                </dict>
+        </array>
+        <key>CFBundleDocumentTypes</key>
+        <array>
 		<dict>
 			<key>CFBundleTypeIconFiles</key>
 			<array/>
@@ -149,11 +176,23 @@
 			<string>ABB Configuration File</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.abb.rapid.config</string>
-			</array>
-		</dict>
-	</array>
+                        <key>LSItemContentTypes</key>
+                        <array>
+                                <string>com.abb.rapid.config</string>
+                        </array>
+                </dict>
+                <dict>
+                        <key>CFBundleTypeIconFiles</key>
+                        <array/>
+                        <key>CFBundleTypeName</key>
+                        <string>ABB RAPID Source Bundle</string>
+                        <key>LSHandlerRank</key>
+                        <string>Owner</string>
+                        <key>LSItemContentTypes</key>
+                        <array>
+                                <string>com.abb.rapid.source</string>
+                        </array>
+                </dict>
+        </array>
 </dict>
 </plist>

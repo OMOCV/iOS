@@ -3,37 +3,31 @@ import SwiftUI
 struct ContentView: View {
     @State private var files: [ABBFile] = []
     @State private var selectedFile: ABBFile?
+    @State private var sheetFile: ABBFile?
     @State private var showDocumentPicker = false
     @State private var newlySelectedFiles: [ABBFile] = []
     @Namespace private var hero
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 LiquidGlassBackground()
                     .ignoresSafeArea()
 
-                VStack(alignment: .leading, spacing: 16) {
-                    header
-
-                    if files.isEmpty {
-                        emptyState
-                            .matchedGeometryEffect(id: "card", in: hero)
-                            .transition(.scale.combined(with: .opacity))
-                    } else {
-                        FileListView(files: files, selectedFile: $selectedFile)
-                            .matchedGeometryEffect(id: "card", in: hero)
-                            .transition(.scale.combined(with: .opacity))
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 18) {
+                        header
+                        metricRow
+                        workspace
                     }
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 12)
                 }
-                .padding(.horizontal)
-                .padding(.top, 12)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showDocumentPicker = true
-                    }) {
+                    Button(action: { showDocumentPicker = true }) {
                         Label("toolbar.import", systemImage: "plus")
                     }
                     .tint(.white)
@@ -41,10 +35,11 @@ struct ContentView: View {
 
                 ToolbarItemGroup(placement: .navigationBarLeading) {
                     if !files.isEmpty {
-                        Button(action: {
+                        Button(role: .destructive, action: {
                             withAnimation(.spring(response: 0.45, dampingFraction: 0.78)) {
                                 files.removeAll()
                                 selectedFile = nil
+                                sheetFile = nil
                             }
                         }) {
                             Label("toolbar.clear", systemImage: "trash")
@@ -62,14 +57,14 @@ struct ContentView: View {
             .onChange(of: newlySelectedFiles) { newFiles in
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.85)) {
                     files.append(contentsOf: newFiles)
+                    if selectedFile == nil { selectedFile = newFiles.first }
                 }
                 newlySelectedFiles = []
             }
-            .sheet(item: $selectedFile) { file in
+            .sheet(item: $sheetFile) { file in
                 CodeEditorView(file: file)
             }
         }
-        .navigationViewStyle(.stack)
     }
 
     private var header: some View {
@@ -84,6 +79,81 @@ struct ContentView: View {
                 .foregroundStyle(Color.white.opacity(0.85))
         }
         .padding(.vertical, 12)
+    }
+
+    private var metricRow: some View {
+        let moduleCount = files.reduce(0) { $0 + $1.modules.count }
+        let routineCount = files.reduce(0) { $0 + $1.modules.reduce(0) { $0 + $1.routines.count } }
+
+        return HStack(spacing: 12) {
+            metricChip(title: "metrics.files", value: files.count, icon: "folder.fill")
+            metricChip(title: "metrics.modules", value: moduleCount, icon: "shippingbox.fill")
+            metricChip(title: "metrics.routines", value: routineCount, icon: "function")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func metricChip(title: String, value: Int, icon: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .font(.caption.weight(.bold))
+                .padding(10)
+                .background(Color.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .foregroundStyle(.white)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(String(format: NSLocalizedString(title, comment: ""), value))
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.8))
+                Text("\(value)")
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.white)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .shadow(color: Color.black.opacity(0.12), radius: 12, x: 0, y: 8)
+    }
+
+    private var workspace: some View {
+        GeometryReader { proxy in
+            let isWide = proxy.size.width > 820 || horizontalSizeClass == .regular
+
+            VStack(alignment: .leading, spacing: 16) {
+                if files.isEmpty {
+                    emptyState
+                        .matchedGeometryEffect(id: "card", in: hero)
+                        .transition(.scale.combined(with: .opacity))
+                } else {
+                    if isWide {
+                        HStack(alignment: .top, spacing: 18) {
+                            FileListView(files: files) { file in
+                                selectedFile = file
+                            }
+                            .frame(maxWidth: proxy.size.width * 0.45)
+
+                            Group {
+                                if let file = selectedFile ?? files.first {
+                                    CodeEditorView(file: file, useAmbientBackground: false)
+                                        .glassCard()
+                                } else {
+                                    emptyDetail
+                                }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        .transition(.opacity.combined(with: .scale))
+                    } else {
+                        FileListView(files: files) { file in
+                            selectedFile = file
+                            sheetFile = file
+                        }
+                        .transition(.opacity)
+                    }
+                }
+            }
+        }
+        .frame(minHeight: 420)
     }
 
     private var emptyState: some View {
@@ -126,6 +196,29 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 32)
         .glassCard()
+    }
+
+    private var emptyDetail: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "sparkles")
+                .font(.largeTitle)
+                .foregroundColor(.white.opacity(0.85))
+            Text("detail.placeholder")
+                .font(.headline)
+                .foregroundStyle(.white)
+            Text("detail.placeholder.description")
+                .font(.callout)
+                .foregroundStyle(.white.opacity(0.85))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(24)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+        )
     }
 }
 

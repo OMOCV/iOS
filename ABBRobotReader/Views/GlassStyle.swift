@@ -3,32 +3,36 @@ import SwiftUI
 struct LiquidGlassBackground: View {
     var body: some View {
         LinearGradient(
-            colors: [Color(red: 0.13, green: 0.2, blue: 0.35), Color(red: 0.05, green: 0.08, blue: 0.16)],
+            colors: [
+                Color(red: 0.09, green: 0.15, blue: 0.28),
+                Color(red: 0.03, green: 0.05, blue: 0.12)
+            ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
         .overlay(
             ZStack {
-                Circle()
-                    .fill(Color(red: 0.29, green: 0.6, blue: 0.98).opacity(0.35))
-                    .blur(radius: 120)
-                    .frame(width: 240, height: 240)
-                    .offset(x: -120, y: -160)
+                angularGlassBlob(color: Color(red: 0.34, green: 0.66, blue: 0.98), blur: 130, size: 280)
+                    .offset(x: -160, y: -200)
 
-                Circle()
-                    .fill(Color(red: 0.99, green: 0.65, blue: 0.45).opacity(0.25))
-                    .blur(radius: 140)
-                    .frame(width: 260, height: 260)
-                    .offset(x: 160, y: 200)
+                angularGlassBlob(color: Color(red: 0.99, green: 0.54, blue: 0.43), blur: 150, size: 320)
+                    .offset(x: 220, y: 240)
 
-                RoundedRectangle(cornerRadius: 120)
-                    .fill(Color.white.opacity(0.08))
-                    .blur(radius: 90)
-                    .rotationEffect(.degrees(12))
-                    .frame(width: 320, height: 520)
-                    .offset(x: 80, y: -40)
+                angularGlassBlob(color: Color.white.opacity(0.35), blur: 200, size: 360)
+                    .blendMode(.screen)
+                    .offset(x: -40, y: 160)
             }
         )
+    }
+
+    @ViewBuilder
+    private func angularGlassBlob(color: Color, blur: CGFloat, size: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: size / 2, style: .continuous)
+            .fill(color.opacity(0.32))
+            .frame(width: size, height: size * 1.1)
+            .rotationEffect(.degrees(-18))
+            .blur(radius: blur)
+            .shadow(color: color.opacity(0.3), radius: blur / 2)
     }
 }
 
@@ -52,21 +56,13 @@ extension View {
 
     @ViewBuilder
     func glassToolbarStyle() -> some View {
-        if #available(iOS 16.0, *) {
-            self
-                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                .toolbarColorScheme(.light, for: .navigationBar)
-        } else {
-            self
-        }
+        self
+            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+            .toolbarColorScheme(.light, for: .navigationBar)
     }
 
     @ViewBuilder
     func glassListBackground() -> some View {
-        if #available(iOS 16.0, *) {
-            self.scrollContentBackground(.hidden)
-        } else {
-            self
-        }
+        self.scrollContentBackground(.hidden)
     }
 }

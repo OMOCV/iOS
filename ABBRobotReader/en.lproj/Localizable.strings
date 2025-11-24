@@ -1,5 +1,5 @@
 "app.title" = "ABB Robot Reader";
-"app.subtitle" = "Liquid Glass design tuned for iOS 26";
+"app.subtitle" = "Liquid Glass workspace tuned for iOS 26";
 "empty.title" = "Bring your RAPID files to life";
 "empty.description" = "Import .mod, .prg, .sys, or .cfg files and explore modules in a frosted, full-screen workspace.";
 "empty.import" = "Import Files";
@@ -12,3 +12,8 @@
 "routine.parameters" = "%d param(s)";
 "module.view.full" = "View Full Module";
 "detail.done" = "Done";
+"metrics.files" = "%d file(s)";
+"metrics.modules" = "%d module(s)";
+"metrics.routines" = "%d routine(s)";
+"detail.placeholder" = "Pick a file to preview";
+"detail.placeholder.description" = "Your modules, routines, and declarations will appear here with RAPID syntax coloring.";

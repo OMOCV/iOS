@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CodeEditorView: View {
     let file: ABBFile
+    var useAmbientBackground: Bool = true
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var selectedModuleID: ABBModule.ID?
     @State private var selectedRoutineID: ABBRoutine.ID?
@@ -20,7 +21,7 @@ struct CodeEditorView: View {
 
     var body: some View {
         Group {
-            if #available(iOS 16.0, *), horizontalSizeClass == .regular {
+            if horizontalSizeClass == .regular {
                 NavigationSplitView {
                     moduleList(usesInlineDetail: true)
                 } detail: {
@@ -28,7 +29,7 @@ struct CodeEditorView: View {
                 }
                 .navigationSplitViewStyle(.balanced)
             } else {
-                NavigationView {
+                NavigationStack {
                     moduleList(usesInlineDetail: false)
                         .navigationTitle(file.name)
                         .navigationBarTitleDisplayMode(.inline)
@@ -43,11 +44,15 @@ struct CodeEditorView: View {
             }
         }
         .background(
-            ZStack {
-                LiquidGlassBackground()
-                    .ignoresSafeArea()
-                LinearGradient(colors: [.clear, Color.black.opacity(0.1)], startPoint: .top, endPoint: .bottom)
-                    .ignoresSafeArea()
+            Group {
+                if useAmbientBackground {
+                    ZStack {
+                        LiquidGlassBackground()
+                            .ignoresSafeArea()
+                        LinearGradient(colors: [.clear, Color.black.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+                            .ignoresSafeArea()
+                    }
+                }
             }
         )
     }
@@ -187,9 +192,9 @@ struct RoutineDetailView: View {
     let content: String
     let title: String
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 Text(SyntaxHighlighter.highlight(content))
                     .font(.system(.body, design: .monospaced))
@@ -206,6 +211,7 @@ struct RoutineDetailView: View {
                     }
                 }
             }
+            .background(.ultraThinMaterial)
         }
     }
 }

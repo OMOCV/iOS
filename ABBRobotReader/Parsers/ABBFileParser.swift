@@ -21,74 +21,68 @@ class ABBFileParser {
         var declarations: [String] = []
         var routines: [ABBRoutine] = []
         var lineNumber = 0
-        
+
+        let moduleRegex = try NSRegularExpression(pattern: "^\\s*(sysmodule|usermodule|module)\\s+([\\w$]+)", options: [.caseInsensitive])
+        let routineRegex = try NSRegularExpression(pattern: "^\\s*(local\\s+)?(proc|func|trap)\\s+([\\w$]+)(\\s*\\([^)]*\\))?", options: [.caseInsensitive])
+        let routineEndRegex = try NSRegularExpression(pattern: "^\\s*end(proc|func|trap)", options: [.caseInsensitive])
+        let declarationKeywords = ["var", "pers", "const", "record", "alias", "trapdata", "task", "struct"]
+
         for line in lines {
             lineNumber += 1
             let trimmedLine = line.trimmingCharacters(in: .whitespaces)
-            let uppercasedLine = trimmedLine.uppercased()
-            
-            // Module detection
-            if uppercasedLine.hasPrefix("MODULE") || uppercasedLine.hasPrefix("SYSMODULE") || uppercasedLine.hasPrefix("USERMODULE") {
-                // Save previous module if exists
+
+            if let match = moduleRegex.firstMatch(in: trimmedLine, range: NSRange(location: 0, length: trimmedLine.utf16.count)) {
                 if var module = currentModule {
                     module.routines = routines
                     module.declarations = declarations
                     module.content = moduleContent
                     modules.append(module)
                 }
-                
-                // Parse module name
-                let moduleType: ABBModule.ModuleType
-                if uppercasedLine.hasPrefix("SYSMODULE") {
-                    moduleType = .system
-                } else if uppercasedLine.hasPrefix("USERMODULE") {
-                    moduleType = .user
-                } else {
-                    moduleType = .program
-                }
 
-                let moduleName = extractName(from: trimmedLine, after: moduleType.rawValue)
-                currentModule = ABBModule(name: moduleName, type: moduleType, routines: [], declarations: [], content: "")
+                let typeToken = (trimmedLine as NSString).substring(with: match.range(at: 1)).uppercased()
+                let nameToken = (trimmedLine as NSString).substring(with: match.range(at: 2))
+                let moduleType: ABBModule.ModuleType = {
+                    switch typeToken {
+                    case "SYSMODULE": return .system
+                    case "USERMODULE": return .user
+                    default: return .program
+                    }
+                }()
+
+                currentModule = ABBModule(name: nameToken, type: moduleType, routines: [], declarations: [], content: "")
                 moduleContent = line + "\n"
                 routines = []
                 declarations = []
+                currentRoutine = nil
+                routineContent = ""
+                continue
             }
-            // Routine detection
-            else if [
-                uppercasedLine.hasPrefix("PROC "),
-                uppercasedLine.hasPrefix("FUNC "),
-                uppercasedLine.hasPrefix("TRAP "),
-                uppercasedLine.hasPrefix("LOCAL PROC "),
-                uppercasedLine.hasPrefix("LOCAL FUNC "),
-                uppercasedLine.hasPrefix("LOCAL TRAP ")
-            ].contains(true) {
-                // Save previous routine if exists
+
+            if let match = routineRegex.firstMatch(in: trimmedLine, range: NSRange(location: 0, length: trimmedLine.utf16.count)) {
                 if var routine = currentRoutine {
                     routine.content = routineContent
                     routines.append(routine)
                 }
-                
-                let routineType: ABBRoutine.RoutineType
-                let keyword: String
-                if uppercasedLine.hasPrefix("LOCAL PROC ") || uppercasedLine.hasPrefix("PROC ") {
-                    routineType = .proc
-                    keyword = "PROC"
-                } else if uppercasedLine.hasPrefix("LOCAL FUNC ") || uppercasedLine.hasPrefix("FUNC ") {
-                    routineType = .function
-                    keyword = "FUNC"
-                } else {
-                    routineType = .trap
-                    keyword = "TRAP"
-                }
-                
-                let routineName = extractName(from: trimmedLine, after: keyword)
+
+                let typeToken = (trimmedLine as NSString).substring(with: match.range(at: 2)).uppercased()
+                let routineName = (trimmedLine as NSString).substring(with: match.range(at: 3))
                 let params = extractParameters(from: trimmedLine)
+
+                let routineType: ABBRoutine.RoutineType = {
+                    switch typeToken {
+                    case "FUNC": return .function
+                    case "TRAP": return .trap
+                    default: return .proc
+                    }
+                }()
+
                 currentRoutine = ABBRoutine(name: routineName, type: routineType, parameters: params, content: "", lineNumber: lineNumber)
                 routineContent = line + "\n"
                 moduleContent += line + "\n"
+                continue
             }
-            // End of routine
-            else if (trimmedLine.hasPrefix("ENDPROC") || trimmedLine.hasPrefix("ENDFUNC") || trimmedLine.hasPrefix("ENDTRAP")) && currentRoutine != nil {
+
+            if routineEndRegex.firstMatch(in: trimmedLine, range: NSRange(location: 0, length: trimmedLine.utf16.count)) != nil, currentRoutine != nil {
                 routineContent += line + "\n"
                 moduleContent += line + "\n"
                 if var routine = currentRoutine {
@@ -97,9 +91,10 @@ class ABBFileParser {
                 }
                 currentRoutine = nil
                 routineContent = ""
+                continue
             }
-            // End of module
-            else if trimmedLine.hasPrefix("ENDMODULE") {
+
+            if trimmedLine.lowercased().hasPrefix("endmodule") {
                 moduleContent += line + "\n"
                 if var module = currentModule {
                     module.routines = routines
@@ -111,26 +106,29 @@ class ABBFileParser {
                 routines = []
                 declarations = []
                 moduleContent = ""
+                currentRoutine = nil
+                routineContent = ""
+                continue
             }
-            // Variable declarations
-            else if currentModule != nil && currentRoutine == nil {
-                if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("!") {
-                    // Check for variable declarations
-                    if trimmedLine.contains("VAR") || trimmedLine.contains("PERS") || trimmedLine.contains("CONST") {
+
+            if currentModule != nil && currentRoutine == nil {
+                if !trimmedLine.isEmpty && !trimmedLine.trimmingCharacters(in: .whitespaces).hasPrefix("!") {
+                    let lower = trimmedLine.lowercased()
+                    if declarationKeywords.contains(where: { lower.hasPrefix($0) || lower.contains(" \($0)") }) {
                         declarations.append(trimmedLine)
                     }
                 }
                 moduleContent += line + "\n"
+                continue
             }
-            // Inside routine
-            else if currentRoutine != nil {
+
+            if currentRoutine != nil {
                 routineContent += line + "\n"
                 moduleContent += line + "\n"
+                continue
             }
-            // Outside module (standalone code)
-            else {
-                moduleContent += line + "\n"
-            }
+
+            moduleContent += line + "\n"
         }
         
         // Append any unterminated routine/module so partially written files still render.
