@@ -86,7 +86,7 @@ jobs:
         PROFILE_PATH=~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
         echo "${{ secrets.IOS_MOBILEPROVISION }}" | base64 --decode > "$PROFILE_PATH"
 
-        echo "Extract provisioning profile info..."
+        echo "解析描述文件..."
         security cms -D -i "$PROFILE_PATH" > profile.plist
 
         PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print :Name' profile.plist)
@@ -101,12 +101,12 @@ jobs:
         echo "📌 UUID: $PROFILE_UUID"
         echo "📌 TeamID: $TEAM_ID"
 
-# -------------------------
-# 生成 ExportOptions.plist
-# -------------------------
-- name: Generate ExportOptions.plist
-  run: |
-    cat > ExportOptions.plist <<'EOF'
+    # -------------------------
+    # 生成 ExportOptions.plist
+    # -------------------------
+    - name: Generate ExportOptions.plist
+      run: |
+        cat > ExportOptions.plist <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
 "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -114,17 +114,22 @@ jobs:
 <dict>
   <key>method</key>
   <string>ad-hoc</string>
+
   <key>teamID</key>
   <string>${{ env.DEVELOPMENT_TEAM }}</string>
+
   <key>signingStyle</key>
   <string>manual</string>
+
   <key>provisioningProfiles</key>
   <dict>
     <key>${{ env.APP_BUNDLE_ID }}</key>
     <string>${{ env.PROVISIONING_PROFILE_SPECIFIER }}</string>
   </dict>
+
   <key>stripSwiftSymbols</key>
   <true/>
+
   <key>compileBitcode</key>
   <false/>
 </dict>
