@@ -1,0 +1,15 @@
+"app_title" = "ABB 程序阅读器";
+"glass_headline" = "Liquid Glass 全新观感";
+"glass_subheadline" = "活力霜冻界面，为 ABB RAPID 代码而生。";
+"ready_for_ios" = "为 iOS 26 优化";
+"empty_state_title" = "还没有导入任何 ABB 程序";
+"empty_state_description" = "导入 .mod、.prg、.sys 或 .cfg 文件即可开始";
+"import_files_action" = "导入文件";
+"import_toolbar" = "导入";
+"clear_all" = "全部清除";
+"modules_format" = "%d 个模块";
+"routines_format" = "例行程序（%d）";
+"parameters_format" = "%d 个参数";
+"view_full_module" = "查看完整模块";
+"declarations_format" = "声明（%d）";
+"close_action" = "完成";

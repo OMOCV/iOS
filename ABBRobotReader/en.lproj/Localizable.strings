@@ -1,0 +1,15 @@
+"app_title" = "ABB Robot Reader";
+"glass_headline" = "Liquid Glass Reader";
+"glass_subheadline" = "Modern frosted interface tuned for ABB RAPID files.";
+"ready_for_ios" = "Optimized for iOS 26";
+"empty_state_title" = "No ABB Robot Programs Loaded";
+"empty_state_description" = "Import .mod, .prg, .sys, or .cfg files to get started";
+"import_files_action" = "Import Files";
+"import_toolbar" = "Import";
+"clear_all" = "Clear All";
+"modules_format" = "%d module(s)";
+"routines_format" = "Routines (%d)";
+"parameters_format" = "%d param(s)";
+"view_full_module" = "View Full Module";
+"declarations_format" = "Declarations (%d)";
+"close_action" = "Close";
