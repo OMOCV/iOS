@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000001000000000000001 /* ABBRobotReaderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000001 /* ABBRobotReaderApp.swift */; };
-		A1000002000000000000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002000000000000001 /* ContentView.swift */; };
-		A1000003000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000003000000000000001 /* Assets.xcassets */; };
-		A1000004000000000000001 /* ABBFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004000000000000001 /* ABBFileParser.swift */; };
-		A1000005000000000000001 /* SyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000005000000000000001 /* SyntaxHighlighter.swift */; };
-		A1000006000000000000001 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006000000000000001 /* FileListView.swift */; };
-		A1000007000000000000001 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000007000000000000001 /* CodeEditorView.swift */; };
-		A1000008000000000000001 /* ABBModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008000000000000001 /* ABBModule.swift */; };
-		A1000009000000000000001 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000009000000000000001 /* DocumentPicker.swift */; };
+                A1000001000000000000001 /* ABBRobotReaderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000001 /* ABBRobotReaderApp.swift */; };
+                A1000002000000000000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002000000000000001 /* ContentView.swift */; };
+                A1000003000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000003000000000000001 /* Assets.xcassets */; };
+                A1000004000000000000001 /* ABBFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004000000000000001 /* ABBFileParser.swift */; };
+                A1000005000000000000001 /* SyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000005000000000000001 /* SyntaxHighlighter.swift */; };
+                A1000006000000000000001 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006000000000000001 /* FileListView.swift */; };
+                A1000007000000000000001 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000007000000000000001 /* CodeEditorView.swift */; };
+                A1000008000000000000001 /* ABBModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008000000000000001 /* ABBModule.swift */; };
+                A1000009000000000000001 /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000009000000000000001 /* DocumentPicker.swift */; };
+                A1000010000000000000001 /* GlassStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011000000000000001 /* GlassStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,10 +27,11 @@
 		A2000004000000000000001 /* ABBFileParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABBFileParser.swift; sourceTree = "<group>"; };
 		A2000005000000000000001 /* SyntaxHighlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxHighlighter.swift; sourceTree = "<group>"; };
 		A2000006000000000000001 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
-		A2000007000000000000001 /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
-		A2000008000000000000001 /* ABBModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABBModule.swift; sourceTree = "<group>"; };
-		A2000009000000000000001 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
-		A2000010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+                A2000007000000000000001 /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
+                A2000008000000000000001 /* ABBModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABBModule.swift; sourceTree = "<group>"; };
+                A2000009000000000000001 /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
+                A2000010000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+                A2000011000000000000001 /* GlassStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,17 +74,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A5000004000000000000001 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A2000002000000000000001 /* ContentView.swift */,
-				A2000006000000000000001 /* FileListView.swift */,
-				A2000007000000000000001 /* CodeEditorView.swift */,
-				A2000009000000000000001 /* DocumentPicker.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
+                A5000004000000000000001 /* Views */ = {
+                        isa = PBXGroup;
+                        children = (
+                                A2000002000000000000001 /* ContentView.swift */,
+                                A2000006000000000000001 /* FileListView.swift */,
+                                A2000007000000000000001 /* CodeEditorView.swift */,
+                                A2000009000000000000001 /* DocumentPicker.swift */,
+                                A2000011000000000000001 /* GlassStyle.swift */,
+                        );
+                        path = Views;
+                        sourceTree = "<group>";
+                };
 		A5000005000000000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,15 +174,16 @@
 			files = (
 				A1000001000000000000001 /* ABBRobotReaderApp.swift in Sources */,
 				A1000002000000000000001 /* ContentView.swift in Sources */,
-				A1000004000000000000001 /* ABBFileParser.swift in Sources */,
-				A1000005000000000000001 /* SyntaxHighlighter.swift in Sources */,
-				A1000006000000000000001 /* FileListView.swift in Sources */,
-				A1000007000000000000001 /* CodeEditorView.swift in Sources */,
-				A1000008000000000000001 /* ABBModule.swift in Sources */,
-				A1000009000000000000001 /* DocumentPicker.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
+                                A1000004000000000000001 /* ABBFileParser.swift in Sources */,
+                                A1000005000000000000001 /* SyntaxHighlighter.swift in Sources */,
+                                A1000006000000000000001 /* FileListView.swift in Sources */,
+                                A1000007000000000000001 /* CodeEditorView.swift in Sources */,
+                                A1000008000000000000001 /* ABBModule.swift in Sources */,
+                                A1000009000000000000001 /* DocumentPicker.swift in Sources */,
+                                A1000010000000000000001 /* GlassStyle.swift in Sources */,
+                        );
+                        runOnlyForDeploymentPostprocessing = 0;
+                };
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
