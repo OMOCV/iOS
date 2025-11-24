@@ -27,7 +27,7 @@ struct ABBRoutine: Identifiable, Hashable {
     
     enum RoutineType: String {
         case proc = "PROC"
-        case func = "FUNC"
+        case function = "FUNC"
         case trap = "TRAP"
     }
 }

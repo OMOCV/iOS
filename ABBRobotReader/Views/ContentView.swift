@@ -44,16 +44,16 @@ struct ContentView: View {
             }
             .navigationTitle("ABB Robot Reader")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button(action: {
                         showDocumentPicker = true
                     }) {
                         Label("Import", systemImage: "plus")
                     }
                 }
-                
-                if !files.isEmpty {
-                    ToolbarItem(placement: .navigationBarLeading) {
+
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    if !files.isEmpty {
                         Button(action: {
                             files.removeAll()
                             selectedFile = nil

@@ -60,7 +60,7 @@ class ABBFileParser {
                     routineType = .proc
                     keyword = "PROC"
                 } else if trimmedLine.hasPrefix("FUNC ") {
-                    routineType = .func
+                    routineType = .function
                     keyword = "FUNC"
                 } else {
                     routineType = .trap
