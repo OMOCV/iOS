@@ -90,14 +90,14 @@ xcodebuild clean \
 这个脚本会：
 1. 清理之前的构建
 2. 创建归档 (Archive)
-3. 导出 IPA 文件
+3. 从归档生成未重新签名的 IPA
 4. 将 IPA 保存到 `build/ipa/` 目录
 
 使用前请确认：
 
 - 必须在 **macOS** 上执行，并安装好 Xcode 及其命令行工具（`xcodebuild`）。
 - 请在项目根目录运行脚本，否则会提示找不到 `ABBRobotReader.xcodeproj`。
-- 如需带签名的 IPA，请根据团队证书调整脚本中的导出选项或在 Xcode 中手动分发。
+- 生成的 IPA 直接从归档打包而不重新签名，适合用于本地验证或后续手动签名。如需带签名的 IPA，请在 Xcode Organizer 中分发或在 CI 中提供签名证书和描述文件。
 
 ### 在 GitHub Actions 中构建 IPA
 

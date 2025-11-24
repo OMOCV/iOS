@@ -53,46 +53,28 @@ xcodebuild archive \
     -configuration ${CONFIGURATION} \
     -archivePath ${ARCHIVE_PATH} \
     -destination 'generic/platform=iOS' \
+    -sdk iphoneos \
     CODE_SIGN_IDENTITY="" \
     CODE_SIGNING_REQUIRED=NO \
     CODE_SIGNING_ALLOWED=NO
 
-# Create export options plist
-echo "📝 Creating export options..."
-cat > build/ExportOptions.plist << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>method</key>
-    <string>development</string>
-    <key>compileBitcode</key>
-    <false/>
-    <key>signingStyle</key>
-    <string>automatic</string>
-    <key>stripSwiftSymbols</key>
-    <true/>
-    <key>thinning</key>
-    <string>&lt;none&gt;</string>
-</dict>
-</plist>
-EOF
-
-# Export IPA
-echo "📤 Exporting IPA..."
-xcodebuild -exportArchive \
-    -archivePath ${ARCHIVE_PATH} \
-    -exportPath ${EXPORT_PATH} \
-    -exportOptionsPlist build/ExportOptions.plist
-
-EXPORTED_IPA=$(find "${EXPORT_PATH}" -maxdepth 1 -name "*.ipa" | head -n 1 || true)
+APP_PATH="${ARCHIVE_PATH}/Products/Applications/${PROJECT_NAME}.app"
+PAYLOAD_PATH="${EXPORT_PATH}/Payload"
 FINAL_IPA="${EXPORT_PATH}/${IPA_NAME}"
-if [[ -n "${EXPORTED_IPA}" && "${EXPORTED_IPA}" != "${FINAL_IPA}" ]]; then
-  mv "${EXPORTED_IPA}" "${FINAL_IPA}"
-elif [[ -z "${EXPORTED_IPA}" ]]; then
-  echo "⚠️  未找到导出的 IPA，请检查 xcodebuild 输出。"
+
+echo "📦 Packaging IPA without re-signing..."
+if [[ ! -d "${APP_PATH}" ]]; then
+  echo "❌ 未找到生成的 .app，Archive 可能失败。"
   exit 1
 fi
+
+rm -rf "${PAYLOAD_PATH}" "${FINAL_IPA}"
+mkdir -p "${PAYLOAD_PATH}"
+cp -R "${APP_PATH}" "${PAYLOAD_PATH}/"
+
+pushd "${EXPORT_PATH}" >/dev/null
+zip -r "${IPA_NAME}" Payload >/dev/null
+popd >/dev/null
 
 if [[ ! -f "${FINAL_IPA}" ]]; then
   echo "⚠️  未能生成 IPA，请查看上方日志。"
