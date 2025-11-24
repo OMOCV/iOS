@@ -99,6 +99,18 @@ xcodebuild clean \
 - 请在项目根目录运行脚本，否则会提示找不到 `ABBRobotReader.xcodeproj`。
 - 如需带签名的 IPA，请根据团队证书调整脚本中的导出选项或在 Xcode 中手动分发。
 
+### 在 GitHub Actions 中构建 IPA
+
+仓库提供了 CI 工作流（`.github/workflows/build-ipa.yml`）用于在 macOS Runner 上构建 IPA。
+
+触发方式：
+
+- 向 `main` 分支推送
+- 打开 Pull Request
+- 手动执行 `Run workflow`（workflow_dispatch）
+
+CI 构建完成后，IPA 会作为名为 `ABBRobotReader-IPA` 的工件 (artifact) 发布，可从 Actions 页面下载。
+
 ### 手动创建 Archive
 
 1. 在 Xcode 中选择设备为 "Any iOS Device (arm64)"
