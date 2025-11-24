@@ -1,0 +1,14 @@
+"app.title" = "ABB 机器人阅读器";
+"app.subtitle" = "液态玻璃设计，与 iOS 26 天衣无缝";
+"empty.title" = "让 RAPID 文件焕发生机";
+"empty.description" = "导入 .mod、.prg、.sys 或 .cfg 文件，在全屏霜冻界面中浏览模块。";
+"empty.import" = "导入文件";
+"toolbar.import" = "导入";
+"toolbar.clear" = "清空";
+"file.module.count" = "%d 个模块";
+"file.routine.count" = "%d 个例行程序";
+"module.declarations" = "声明（%d）";
+"module.routines" = "程序（%d）";
+"routine.parameters" = "%d 个参数";
+"module.view.full" = "查看完整模块";
+"detail.done" = "完成";

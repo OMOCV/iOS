@@ -4,12 +4,12 @@ struct CodeEditorView: View {
     let file: ABBFile
     @State private var selectedModule: ABBModule?
     @State private var selectedRoutine: ABBRoutine?
-    
+
     var body: some View {
         NavigationView {
             List {
                 ForEach(file.modules) { module in
-                    Section(header: 
+                    Section(header:
                         HStack {
                             Text(module.name)
                                 .font(.headline)
@@ -21,7 +21,7 @@ struct CodeEditorView: View {
                     ) {
                         // Declarations
                         if !module.declarations.isEmpty {
-                            DisclosureGroup("Declarations (\(module.declarations.count))") {
+                            DisclosureGroup(String(format: NSLocalizedString("module.declarations", comment: ""), module.declarations.count)) {
                                 ForEach(module.declarations, id: \.self) { declaration in
                                     Text(declaration)
                                         .font(.system(.caption, design: .monospaced))
@@ -29,10 +29,10 @@ struct CodeEditorView: View {
                                 }
                             }
                         }
-                        
+
                         // Routines
                         if !module.routines.isEmpty {
-                            DisclosureGroup("Routines (\(module.routines.count))") {
+                            DisclosureGroup(String(format: NSLocalizedString("module.routines", comment: ""), module.routines.count)) {
                                 ForEach(module.routines) { routine in
                                     Button(action: {
                                         selectedRoutine = routine
@@ -50,7 +50,7 @@ struct CodeEditorView: View {
                                             }
                                             Spacer()
                                             if !routine.parameters.isEmpty {
-                                                Text("\(routine.parameters.count) param(s)")
+                                                Text(String(format: NSLocalizedString("routine.parameters", comment: ""), routine.parameters.count))
                                                     .font(.caption2)
                                                     .foregroundColor(.secondary)
                                             }
@@ -59,7 +59,7 @@ struct CodeEditorView: View {
                                 }
                             }
                         }
-                        
+
                         // View full module
                         Button(action: {
                             selectedModule = module
@@ -67,7 +67,7 @@ struct CodeEditorView: View {
                         }) {
                             HStack {
                                 Image(systemName: "doc.plaintext")
-                                Text("View Full Module")
+                                Text("module.view.full")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .font(.caption)
@@ -77,6 +77,10 @@ struct CodeEditorView: View {
                     }
                 }
             }
+            .glassListBackground()
+            .background(
+                LinearGradient(colors: [.clear, Color.black.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+            )
             .navigationTitle(file.name)
             .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedModule) { module in
@@ -107,7 +111,7 @@ struct RoutineDetailView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button("detail.done") {
                         dismiss()
                     }
                 }

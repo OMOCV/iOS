@@ -2,7 +2,13 @@ import Foundation
 
 class ABBFileParser {
     static func parse(fileURL: URL) throws -> ABBFile {
-        let content = try String(contentsOf: fileURL, encoding: .utf8)
+        let content: String
+        do {
+            content = try String(contentsOf: fileURL, encoding: .utf8)
+        } catch {
+            // ABB controller exports often use ISO-8859-1. Fallback to keep parsing resilient.
+            content = try String(contentsOf: fileURL, encoding: .isoLatin1)
+        }
         let fileName = fileURL.lastPathComponent
         
         var modules: [ABBModule] = []
@@ -119,6 +125,18 @@ class ABBFileParser {
             }
         }
         
+        // Append any unterminated routine/module so partially written files still render.
+        if var routine = currentRoutine {
+            routine.content = routineContent
+            routines.append(routine)
+        }
+        if var module = currentModule {
+            module.routines = routines
+            module.declarations = declarations
+            module.content = moduleContent.isEmpty ? content : moduleContent
+            modules.append(module)
+        }
+
         // Handle case where file doesn't have explicit MODULE declarations
         if modules.isEmpty && !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             let implicitModule = ABBModule(

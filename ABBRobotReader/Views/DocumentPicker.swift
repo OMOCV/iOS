@@ -33,23 +33,25 @@ struct DocumentPicker: UIViewControllerRepresentable {
         }
         
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            var newFiles: [ABBFile] = []
-            
-            for url in urls {
-                if url.startAccessingSecurityScopedResource() {
-                    defer { url.stopAccessingSecurityScopedResource() }
-                    
-                    do {
-                        let file = try ABBFileParser.parse(fileURL: url)
-                        newFiles.append(file)
-                    } catch {
-                        print("Error parsing file \(url.lastPathComponent): \(error)")
+            DispatchQueue.global(qos: .userInitiated).async {
+                var newFiles: [ABBFile] = []
+
+                for url in urls {
+                    if url.startAccessingSecurityScopedResource() {
+                        defer { url.stopAccessingSecurityScopedResource() }
+
+                        do {
+                            let file = try ABBFileParser.parse(fileURL: url)
+                            newFiles.append(file)
+                        } catch {
+                            print("Error parsing file \(url.lastPathComponent): \(error)")
+                        }
                     }
                 }
-            }
-            
-            DispatchQueue.main.async {
-                self.parent.selectedFiles = newFiles
+
+                DispatchQueue.main.async {
+                    self.parent.selectedFiles = newFiles
+                }
             }
         }
     }
